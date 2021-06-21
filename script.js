@@ -62,10 +62,22 @@ class CardDeck {
 	}
 	init() {
 		this.shuffleDeck();
-		let params = window.location.search.split('=')[1] 
+		let key = null
+		let values = []
 		let cardElements = document.querySelectorAll(".card");
 
-		params ? this.draw(params) :
+		if(window.location.search){
+			key = window.location.search.split('=')[0].replace(/\W/g, '') 
+			values = window.location.search.split('=')[1].split('+')
+		}
+
+		this.filter(key, values)
+		let newCards = this.possibleCards
+
+		key ? 
+		newCards.forEach((card) => {
+			this.draw(card.id)
+		}) :
 		cardElements.forEach((cardElement) => {
 			cardElement.addEventListener("click", (e) => {
 				if (cardElement.dataset.inHand == "true") {
@@ -154,6 +166,7 @@ class CardDeck {
 	}
 
 	filter(cardProp = null, values = []) {
+		values.forEach((value) => Number(value) ? values[value] = parseInt(value) : null)
 		this.possibleCards = this.possibleCards.filter((card) => values.includes(card[cardProp]));
 	}
 
