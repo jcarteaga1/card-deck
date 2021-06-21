@@ -62,9 +62,10 @@ class CardDeck {
 	}
 	init() {
 		this.shuffleDeck();
-
+		let params = window.location.search.split('=')[1] 
 		let cardElements = document.querySelectorAll(".card");
 
+		params ? this.draw(params) :
 		cardElements.forEach((cardElement) => {
 			cardElement.addEventListener("click", (e) => {
 				if (cardElement.dataset.inHand == "true") {
